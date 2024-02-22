@@ -1,95 +1,51 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+import React, { useState } from 'react'
+import axios from 'axios'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-export default function Home() {
+const page = () => {
+  const [users, setusers] = useState([""])
+  const [users_2, setusers_2] = useState([""])
+
+  const qute = async ()=>{
+    const res_1 = await axios.get('https://api.quotable.io/random');
+    let min_res_1 = res_1.data.author;
+    setusers(min_res_1)
+  }
+  const qute_2 = async ()=>{
+    const res_2 = await axios.get('https://api.quotable.io/random');
+    let min_res_2 = res_2.data.content;
+    setusers_2(min_res_2)
+    console.log(res_2)
+  }
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+        <div className='main col-lg-5 col-md-9 col-sm-12 col-12'>
+          <div>
+          <h2> Quote Genrater</h2>
+          <button className='btn bg-danger text-light mt-3' onClick={()=>{
+            qute();
+            qute_2();
+          }}>Get New Quote </button>
+          </div>
+          <hr />
+          <h6>{
+            Object.values(users_2).map((e)=>{
+              return e;
+            })
+            }</h6>
+           
+          {/* <button className='btn bg-danger text-light' onClick={qute}>Get Author Name</button> */}
+          
+          <div className='d-block mt-4'>
+        <p className='mt-3'>{Object.values(users).map((e)=>{
+          return e;
+        })} </p>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+        </div>
+    </>
+    
+  )
 }
+
+export default page
